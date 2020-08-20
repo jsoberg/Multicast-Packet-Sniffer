@@ -28,14 +28,14 @@ class PacketSniffer {
         while (!socket.isClosed) {
             packet.length = buffer.size
             socket.receive(packet)
-            printPacketStream(buffer, packet, fileWriter)
+            printPacketStream(packet, fileWriter)
         }
     }
 
     private fun createRecordFile() = File("${SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SSS").format(Date())}_MulticastSharkLog.txt")
 
-    private fun printPacketStream(buffer: ByteArray, packet: DatagramPacket, fileWriter: FileWriter) {
-        val message = String(buffer, packet.offset, packet.length)
+    private fun printPacketStream(packet: DatagramPacket, fileWriter: FileWriter) {
+        val message = String(packet.data, packet.offset, packet.length)
         print("Message received from ${packet.address.hostAddress} at ${nowDateTime()}:\n$message", fileWriter)
     }
 
